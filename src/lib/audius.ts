@@ -9,7 +9,6 @@ let cachedHost: string | null = null;
 let cachedAt = 0;
 
 async function getHost(): Promise<string> {
-  // Cache discovery node for 10 minutes
   if (cachedHost && Date.now() - cachedAt < 600_000) return cachedHost;
   try {
     const r = await fetch("https://api.audius.co");
@@ -66,12 +65,16 @@ async function api<T>(path: string, params: Record<string, string> = {}): Promis
 export async function trending(time: "week" | "month" | "year" = "week") {
   return api<AudiusTrack[]>("/tracks/trending", { time });
 }
+export async function trendingByGenre(genre: string, time: "week" | "month" | "year" = "week") {
+  return api<AudiusTrack[]>("/tracks/trending", { time, genre });
+}
 export async function undergroundTrending() {
   return api<AudiusTrack[]>("/tracks/trending/underground");
 }
 export async function searchTracks(query: string) {
   if (!query.trim()) return [];
-  return api<AudiusTrack[]>("/tracks/search", { query });
+  // sort_method=relevant is default; "popular" surfaces well-known tracks first.
+  return api<AudiusTrack[]>("/tracks/search", { query, sort_method: "popular" });
 }
 export async function searchUsers(query: string) {
   if (!query.trim()) return [];
@@ -83,6 +86,9 @@ export async function searchPlaylists(query: string) {
 }
 export async function getTrack(id: string) {
   return api<AudiusTrack>(`/tracks/${id}`);
+}
+export async function userTracks(userId: string) {
+  return api<AudiusTrack[]>(`/users/${userId}/tracks`, { limit: "20" });
 }
 
 export async function streamUrl(trackId: string): Promise<string> {

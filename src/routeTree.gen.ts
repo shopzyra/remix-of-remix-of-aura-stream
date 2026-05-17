@@ -13,19 +13,23 @@ import { Route as LegalRouteImport } from './routes/legal'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LegalIndexRouteImport } from './routes/legal.index'
 import { Route as LegalTermsRouteImport } from './routes/legal.terms'
 import { Route as LegalPrivacyRouteImport } from './routes/legal.privacy'
 import { Route as LegalDmcaRouteImport } from './routes/legal.dmca'
 import { Route as LegalCookiesRouteImport } from './routes/legal.cookies'
 import { Route as LegalCommunityRouteImport } from './routes/legal.community'
+import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AppUploadRouteImport } from './routes/_app/upload'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
 import { Route as AppSearchRouteImport } from './routes/_app/search'
 import { Route as AppPlaylistsRouteImport } from './routes/_app/playlists'
+import { Route as AppLyricsRouteImport } from './routes/_app/lyrics'
 import { Route as AppLikedRouteImport } from './routes/_app/liked'
 import { Route as AppLibraryRouteImport } from './routes/_app/library'
 import { Route as AppHomeRouteImport } from './routes/_app/home'
 import { Route as AppHistoryRouteImport } from './routes/_app/history'
+import { Route as AppDonateRouteImport } from './routes/_app/donate'
 import { Route as AppPlaylistsIdRouteImport } from './routes/_app/playlists.$id'
 
 const LegalRoute = LegalRouteImport.update({
@@ -46,6 +50,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const LegalIndexRoute = LegalIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => LegalRoute,
 } as any)
 const LegalTermsRoute = LegalTermsRouteImport.update({
   id: '/terms',
@@ -72,6 +81,11 @@ const LegalCommunityRoute = LegalCommunityRouteImport.update({
   path: '/community',
   getParentRoute: () => LegalRoute,
 } as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/callback',
+  path: '/callback',
+  getParentRoute: () => AuthRoute,
+} as any)
 const AppUploadRoute = AppUploadRouteImport.update({
   id: '/upload',
   path: '/upload',
@@ -90,6 +104,11 @@ const AppSearchRoute = AppSearchRouteImport.update({
 const AppPlaylistsRoute = AppPlaylistsRouteImport.update({
   id: '/playlists',
   path: '/playlists',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppLyricsRoute = AppLyricsRouteImport.update({
+  id: '/lyrics',
+  path: '/lyrics',
   getParentRoute: () => AppRoute,
 } as any)
 const AppLikedRoute = AppLikedRouteImport.update({
@@ -112,6 +131,11 @@ const AppHistoryRoute = AppHistoryRouteImport.update({
   path: '/history',
   getParentRoute: () => AppRoute,
 } as any)
+const AppDonateRoute = AppDonateRouteImport.update({
+  id: '/donate',
+  path: '/donate',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppPlaylistsIdRoute = AppPlaylistsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -120,61 +144,72 @@ const AppPlaylistsIdRoute = AppPlaylistsIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/auth': typeof AuthRoute
+  '/auth': typeof AuthRouteWithChildren
   '/legal': typeof LegalRouteWithChildren
+  '/donate': typeof AppDonateRoute
   '/history': typeof AppHistoryRoute
   '/home': typeof AppHomeRoute
   '/library': typeof AppLibraryRoute
   '/liked': typeof AppLikedRoute
+  '/lyrics': typeof AppLyricsRoute
   '/playlists': typeof AppPlaylistsRouteWithChildren
   '/search': typeof AppSearchRoute
   '/settings': typeof AppSettingsRoute
   '/upload': typeof AppUploadRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/legal/community': typeof LegalCommunityRoute
   '/legal/cookies': typeof LegalCookiesRoute
   '/legal/dmca': typeof LegalDmcaRoute
   '/legal/privacy': typeof LegalPrivacyRoute
   '/legal/terms': typeof LegalTermsRoute
+  '/legal/': typeof LegalIndexRoute
   '/playlists/$id': typeof AppPlaylistsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/auth': typeof AuthRoute
-  '/legal': typeof LegalRouteWithChildren
+  '/auth': typeof AuthRouteWithChildren
+  '/donate': typeof AppDonateRoute
   '/history': typeof AppHistoryRoute
   '/home': typeof AppHomeRoute
   '/library': typeof AppLibraryRoute
   '/liked': typeof AppLikedRoute
+  '/lyrics': typeof AppLyricsRoute
   '/playlists': typeof AppPlaylistsRouteWithChildren
   '/search': typeof AppSearchRoute
   '/settings': typeof AppSettingsRoute
   '/upload': typeof AppUploadRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/legal/community': typeof LegalCommunityRoute
   '/legal/cookies': typeof LegalCookiesRoute
   '/legal/dmca': typeof LegalDmcaRoute
   '/legal/privacy': typeof LegalPrivacyRoute
   '/legal/terms': typeof LegalTermsRoute
+  '/legal': typeof LegalIndexRoute
   '/playlists/$id': typeof AppPlaylistsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_app': typeof AppRouteWithChildren
-  '/auth': typeof AuthRoute
+  '/auth': typeof AuthRouteWithChildren
   '/legal': typeof LegalRouteWithChildren
+  '/_app/donate': typeof AppDonateRoute
   '/_app/history': typeof AppHistoryRoute
   '/_app/home': typeof AppHomeRoute
   '/_app/library': typeof AppLibraryRoute
   '/_app/liked': typeof AppLikedRoute
+  '/_app/lyrics': typeof AppLyricsRoute
   '/_app/playlists': typeof AppPlaylistsRouteWithChildren
   '/_app/search': typeof AppSearchRoute
   '/_app/settings': typeof AppSettingsRoute
   '/_app/upload': typeof AppUploadRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/legal/community': typeof LegalCommunityRoute
   '/legal/cookies': typeof LegalCookiesRoute
   '/legal/dmca': typeof LegalDmcaRoute
   '/legal/privacy': typeof LegalPrivacyRoute
   '/legal/terms': typeof LegalTermsRoute
+  '/legal/': typeof LegalIndexRoute
   '/_app/playlists/$id': typeof AppPlaylistsIdRoute
 }
 export interface FileRouteTypes {
@@ -183,38 +218,45 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/legal'
+    | '/donate'
     | '/history'
     | '/home'
     | '/library'
     | '/liked'
+    | '/lyrics'
     | '/playlists'
     | '/search'
     | '/settings'
     | '/upload'
+    | '/auth/callback'
     | '/legal/community'
     | '/legal/cookies'
     | '/legal/dmca'
     | '/legal/privacy'
     | '/legal/terms'
+    | '/legal/'
     | '/playlists/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
-    | '/legal'
+    | '/donate'
     | '/history'
     | '/home'
     | '/library'
     | '/liked'
+    | '/lyrics'
     | '/playlists'
     | '/search'
     | '/settings'
     | '/upload'
+    | '/auth/callback'
     | '/legal/community'
     | '/legal/cookies'
     | '/legal/dmca'
     | '/legal/privacy'
     | '/legal/terms'
+    | '/legal'
     | '/playlists/$id'
   id:
     | '__root__'
@@ -222,26 +264,30 @@ export interface FileRouteTypes {
     | '/_app'
     | '/auth'
     | '/legal'
+    | '/_app/donate'
     | '/_app/history'
     | '/_app/home'
     | '/_app/library'
     | '/_app/liked'
+    | '/_app/lyrics'
     | '/_app/playlists'
     | '/_app/search'
     | '/_app/settings'
     | '/_app/upload'
+    | '/auth/callback'
     | '/legal/community'
     | '/legal/cookies'
     | '/legal/dmca'
     | '/legal/privacy'
     | '/legal/terms'
+    | '/legal/'
     | '/_app/playlists/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRouteWithChildren
-  AuthRoute: typeof AuthRoute
+  AuthRoute: typeof AuthRouteWithChildren
   LegalRoute: typeof LegalRouteWithChildren
 }
 
@@ -274,6 +320,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/legal/': {
+      id: '/legal/'
+      path: '/'
+      fullPath: '/legal/'
+      preLoaderRoute: typeof LegalIndexRouteImport
+      parentRoute: typeof LegalRoute
     }
     '/legal/terms': {
       id: '/legal/terms'
@@ -310,6 +363,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LegalCommunityRouteImport
       parentRoute: typeof LegalRoute
     }
+    '/auth/callback': {
+      id: '/auth/callback'
+      path: '/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_app/upload': {
       id: '/_app/upload'
       path: '/upload'
@@ -336,6 +396,13 @@ declare module '@tanstack/react-router' {
       path: '/playlists'
       fullPath: '/playlists'
       preLoaderRoute: typeof AppPlaylistsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/lyrics': {
+      id: '/_app/lyrics'
+      path: '/lyrics'
+      fullPath: '/lyrics'
+      preLoaderRoute: typeof AppLyricsRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/liked': {
@@ -366,6 +433,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppHistoryRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/donate': {
+      id: '/_app/donate'
+      path: '/donate'
+      fullPath: '/donate'
+      preLoaderRoute: typeof AppDonateRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/playlists/$id': {
       id: '/_app/playlists/$id'
       path: '/$id'
@@ -389,10 +463,12 @@ const AppPlaylistsRouteWithChildren = AppPlaylistsRoute._addFileChildren(
 )
 
 interface AppRouteChildren {
+  AppDonateRoute: typeof AppDonateRoute
   AppHistoryRoute: typeof AppHistoryRoute
   AppHomeRoute: typeof AppHomeRoute
   AppLibraryRoute: typeof AppLibraryRoute
   AppLikedRoute: typeof AppLikedRoute
+  AppLyricsRoute: typeof AppLyricsRoute
   AppPlaylistsRoute: typeof AppPlaylistsRouteWithChildren
   AppSearchRoute: typeof AppSearchRoute
   AppSettingsRoute: typeof AppSettingsRoute
@@ -400,10 +476,12 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppDonateRoute: AppDonateRoute,
   AppHistoryRoute: AppHistoryRoute,
   AppHomeRoute: AppHomeRoute,
   AppLibraryRoute: AppLibraryRoute,
   AppLikedRoute: AppLikedRoute,
+  AppLyricsRoute: AppLyricsRoute,
   AppPlaylistsRoute: AppPlaylistsRouteWithChildren,
   AppSearchRoute: AppSearchRoute,
   AppSettingsRoute: AppSettingsRoute,
@@ -412,12 +490,23 @@ const AppRouteChildren: AppRouteChildren = {
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
+interface AuthRouteChildren {
+  AuthCallbackRoute: typeof AuthCallbackRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthCallbackRoute: AuthCallbackRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+
 interface LegalRouteChildren {
   LegalCommunityRoute: typeof LegalCommunityRoute
   LegalCookiesRoute: typeof LegalCookiesRoute
   LegalDmcaRoute: typeof LegalDmcaRoute
   LegalPrivacyRoute: typeof LegalPrivacyRoute
   LegalTermsRoute: typeof LegalTermsRoute
+  LegalIndexRoute: typeof LegalIndexRoute
 }
 
 const LegalRouteChildren: LegalRouteChildren = {
@@ -426,6 +515,7 @@ const LegalRouteChildren: LegalRouteChildren = {
   LegalDmcaRoute: LegalDmcaRoute,
   LegalPrivacyRoute: LegalPrivacyRoute,
   LegalTermsRoute: LegalTermsRoute,
+  LegalIndexRoute: LegalIndexRoute,
 }
 
 const LegalRouteWithChildren = LegalRoute._addFileChildren(LegalRouteChildren)
@@ -433,9 +523,19 @@ const LegalRouteWithChildren = LegalRoute._addFileChildren(LegalRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRouteWithChildren,
-  AuthRoute: AuthRoute,
+  AuthRoute: AuthRouteWithChildren,
   LegalRoute: LegalRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

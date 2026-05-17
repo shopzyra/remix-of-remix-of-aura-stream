@@ -14,7 +14,7 @@ export const enabledProviders = (): Provider[] => {
 export async function signInWithProvider(provider: Provider) {
   return supabase.auth.signInWithOAuth({
     provider,
-    options: { redirectTo: `${window.location.origin}/home` },
+    options: { redirectTo: `${window.location.origin}/auth/callback` },
   });
 }
 
