@@ -10,6 +10,7 @@ import {
   ListMusic,
   Plus,
   Coffee,
+  Mic2,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useUser } from "@/hooks/use-user";
@@ -51,6 +52,7 @@ function Sidebar() {
     { to: "/library", icon: Library, label: "Library" },
     { to: "/playlists", icon: ListMusic, label: "Playlists" },
     { to: "/liked", icon: Heart, label: "Liked" },
+    { to: "/lyrics", icon: Mic2, label: "Lyrics" },
   ] as const;
 
   return (
@@ -104,17 +106,13 @@ function Sidebar() {
       </div>
 
       <div className="mt-auto space-y-3 pt-4">
-        {config.donation.provider && config.donation.link && (
-          <a
-            href={config.donation.link}
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center justify-center gap-2 rounded-xl border border-primary/40 bg-primary/10 px-3 py-2 text-sm font-medium text-primary transition hover:bg-primary/20"
-          >
-            <Coffee className="h-4 w-4" />
-            {config.donation.label}
-          </a>
-        )}
+        <Link
+          to="/donate"
+          className="flex items-center justify-center gap-2 rounded-xl border border-primary/40 bg-primary/10 px-3 py-2 text-sm font-medium text-primary transition hover:bg-primary/20"
+        >
+          <Coffee className="h-4 w-4" />
+          {config.donation.label || "Support us"}
+        </Link>
         <Link
           to="/settings"
           className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"

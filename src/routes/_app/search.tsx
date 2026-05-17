@@ -12,6 +12,7 @@ import {
 } from "@/lib/audius";
 import { usePlayer, type Track } from "@/store/player";
 import { formatDuration } from "@/lib/format";
+import { TrackMenu } from "@/components/AddToPlaylistMenu";
 
 const search = z.object({ q: z.string().optional() });
 
@@ -102,6 +103,7 @@ function SearchPage() {
                         <div className="truncate text-xs text-muted-foreground">{t.user.name}</div>
                       </div>
                       <span className="text-xs text-muted-foreground tabular-nums">{formatDuration(t.duration)}</span>
+                      <TrackMenu track={all[i]} />
                     </button>
                   );
                 })}

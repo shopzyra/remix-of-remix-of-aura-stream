@@ -7,6 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useUser } from "@/hooks/use-user";
 import { usePlayer, type Track } from "@/store/player";
 import { formatDuration } from "@/lib/format";
+import { TrackMenu } from "@/components/AddToPlaylistMenu";
+import { LikeButton } from "@/components/LikeButton";
 
 export const Route = createFileRoute("/_app/playlists/$id")({
   component: PlaylistDetail,
@@ -185,7 +187,9 @@ function PlaylistDetail() {
                   <div className="truncate text-xs text-muted-foreground">{t.artist}</div>
                 </div>
               </button>
+              <LikeButton track={t} />
               <span className="text-xs text-muted-foreground tabular-nums">{formatDuration(t.durationSeconds)}</span>
+              <TrackMenu track={t} />
               {isOwner && (
                 <button
                   onClick={() => remove.mutate(items.data![i].id)}
