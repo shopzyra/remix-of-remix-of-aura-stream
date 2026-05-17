@@ -11,6 +11,8 @@ import {
   Plus,
   Coffee,
   Mic2,
+  Clock,
+  Podcast,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useUser } from "@/hooks/use-user";
@@ -52,11 +54,13 @@ function Sidebar() {
     { to: "/library", icon: Library, label: "Library" },
     { to: "/playlists", icon: ListMusic, label: "Playlists" },
     { to: "/liked", icon: Heart, label: "Liked" },
+    { to: "/history", icon: Clock, label: "History" },
+    { to: "/podcasts", icon: Podcast, label: "Podcasts" },
     { to: "/lyrics", icon: Mic2, label: "Lyrics" },
   ] as const;
 
   return (
-    <aside className="hidden w-64 shrink-0 flex-col border-r border-sidebar-border bg-sidebar p-4 md:flex">
+    <aside className="hidden w-64 shrink-0 flex-col overflow-y-auto border-r border-sidebar-border bg-sidebar p-4 pb-32 md:flex scrollbar-thin">
       <Link to="/home" className="mb-6 flex items-center gap-2 px-2">
         <div className="grid h-8 w-8 place-items-center rounded-lg gradient-brand shadow-glow">
           <svg viewBox="0 0 24 24" className="h-4 w-4 text-primary-foreground" fill="currentColor">
