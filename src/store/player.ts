@@ -33,6 +33,7 @@ interface PlayerState {
   shuffle: boolean;
   repeat: RepeatMode;
   sinkId: string | null;
+  playbackRate: number; // 0.5..2
 
   // setters
   playNow: (t: Track | Track[], startIndex?: number) => void;
@@ -53,6 +54,7 @@ interface PlayerState {
   toggleShuffle: () => void;
   cycleRepeat: () => void;
   setSinkId: (id: string | null) => void;
+  setPlaybackRate: (r: number) => void;
 }
 
 // Seek requests from UI → engine reads + clears
@@ -76,6 +78,7 @@ export const usePlayer = create<PlayerState>()(
       shuffle: false,
       repeat: "off",
       sinkId: null,
+      playbackRate: 1,
 
       playNow: (t, startIndex = 0) => {
         const tracks = Array.isArray(t) ? t : [t];
@@ -150,6 +153,7 @@ export const usePlayer = create<PlayerState>()(
       cycleRepeat: () =>
         set({ repeat: get().repeat === "off" ? "all" : get().repeat === "all" ? "one" : "off" }),
       setSinkId: (id) => set({ sinkId: id }),
+      setPlaybackRate: (r) => set({ playbackRate: Math.max(0.5, Math.min(2, r)) }),
     }),
     {
       name: "auralis-player",
@@ -161,6 +165,7 @@ export const usePlayer = create<PlayerState>()(
         shuffle: s.shuffle,
         repeat: s.repeat,
         sinkId: s.sinkId,
+        playbackRate: s.playbackRate,
       }),
     }
   )
