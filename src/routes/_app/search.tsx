@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { z } from "zod";
-import { Search as SearchIcon, Play } from "lucide-react";
+import { Search as SearchIcon, Play, TrendingUp } from "lucide-react";
 import {
   searchTracks,
   searchUsers,
@@ -10,6 +10,7 @@ import {
   bestArtwork,
   type AudiusTrack,
 } from "@/lib/audius";
+import { itunesSearch, bestITunesArt } from "@/lib/itunes";
 import { usePlayer, type Track } from "@/store/player";
 import { formatDuration } from "@/lib/format";
 import { TrackMenu } from "@/components/AddToPlaylistMenu";
@@ -55,6 +56,12 @@ function SearchPage() {
     queryKey: ["search", "playlists", debounced],
     queryFn: () => searchPlaylists(debounced),
     enabled: debounced.length >= 2,
+  });
+  const itunes = useQuery({
+    queryKey: ["search", "itunes", debounced],
+    queryFn: () => itunesSearch(debounced, 15),
+    enabled: debounced.length >= 2,
+    staleTime: 10 * 60_000,
   });
 
   const { playNow } = usePlayer();
@@ -103,6 +110,59 @@ function SearchPage() {
                         <div className="truncate text-xs text-muted-foreground">{t.user.name}</div>
                       </div>
                       <span className="text-xs text-muted-foreground tabular-nums">{formatDuration(t.duration)}</span>
+                      {typeof t.play_count === "number" && t.play_count > 0 && (
+                        <span className="hidden items-center gap-1 text-xs text-muted-foreground sm:inline-flex">
+                          <TrendingUp className="h-3 w-3" />
+                          {formatCount(t.play_count)}
+                        </span>
+                      )}
+                      <TrackMenu track={all[i]} />
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </section>
+
+          <section>
+            <h2 className="mb-3 text-lg font-bold">Popular (previews)</h2>
+            {itunes.isLoading ? (
+              <Skeletons />
+            ) : (itunes.data ?? []).length === 0 ? (
+              <Empty />
+            ) : (
+              <div className="space-y-1">
+                {(itunes.data ?? []).map((t, i, arr) => {
+                  const all: Track[] = arr.map((x) => ({
+                    key: `preview:${x.trackId}`,
+                    source: "preview" as const,
+                    id: String(x.trackId),
+                    title: x.trackName,
+                    artist: x.artistName,
+                    coverUrl: bestITunesArt(x),
+                    durationSeconds: x.trackTimeMillis ? Math.round(x.trackTimeMillis / 1000) : 30,
+                    streamUrl: x.previewUrl,
+                  }));
+                  return (
+                    <button
+                      key={t.trackId}
+                      onClick={() => playNow(all, i)}
+                      className="group flex w-full items-center gap-3 rounded-lg p-2 hover:bg-surface-1"
+                    >
+                      <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded">
+                        <img src={bestITunesArt(t)} alt="" loading="lazy" className="h-full w-full object-cover" />
+                        <div className="absolute inset-0 grid place-items-center bg-black/40 opacity-0 transition group-hover:opacity-100">
+                          <Play className="h-4 w-4 fill-current" />
+                        </div>
+                      </div>
+                      <div className="min-w-0 flex-1 text-left">
+                        <div className="truncate text-sm font-medium">{t.trackName}</div>
+                        <div className="truncate text-xs text-muted-foreground">
+                          {t.artistName}
+                          {t.primaryGenreName ? ` · ${t.primaryGenreName}` : ""}
+                        </div>
+                      </div>
+                      <span className="hidden text-[10px] uppercase tracking-wider text-primary sm:inline">30s</span>
                       <TrackMenu track={all[i]} />
                     </button>
                   );
@@ -141,8 +201,13 @@ function SearchPage() {
             ) : (
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-5">
                 {(playlists.data ?? []).slice(0, 10).map((p) => (
-                  <div key={p.id}>
-                    <div className="mb-2 aspect-square overflow-hidden rounded-xl bg-surface-2">
+                  <Link
+                    key={p.id}
+                    to="/audius-playlist/$id"
+                    params={{ id: p.id }}
+                    className="group"
+                  >
+                    <div className="mb-2 aspect-square overflow-hidden rounded-xl bg-surface-2 transition group-hover:scale-[1.02]">
                       {p.artwork?.["480x480"] ? (
                         <img src={p.artwork["480x480"]} alt="" loading="lazy" className="h-full w-full object-cover" />
                       ) : (
@@ -151,7 +216,7 @@ function SearchPage() {
                     </div>
                     <div className="truncate text-sm font-medium">{p.playlist_name}</div>
                     <div className="truncate text-xs text-muted-foreground">{p.user.name}</div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             )}
@@ -160,6 +225,12 @@ function SearchPage() {
       )}
     </div>
   );
+}
+
+function formatCount(n: number): string {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K`;
+  return String(n);
 }
 
 function Skeletons() {
