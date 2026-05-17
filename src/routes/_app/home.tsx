@@ -7,7 +7,6 @@ import { usePlayer, type Track } from "@/store/player";
 import { useUser } from "@/hooks/use-user";
 import { supabase } from "@/integrations/supabase/client";
 import { formatDuration } from "@/lib/format";
-import { TrackMenu } from "@/components/AddToPlaylistMenu";
 
 export const Route = createFileRoute("/_app/home")({
   component: HomePage,
