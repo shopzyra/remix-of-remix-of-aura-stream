@@ -40,7 +40,7 @@ export function MiniPlayer() {
         initial={{ y: 100 }}
         animate={{ y: 0 }}
         transition={{ type: "spring", stiffness: 260, damping: 26 }}
-        className="glass fixed inset-x-2 bottom-16 z-40 rounded-2xl px-3 py-2 shadow-glow md:bottom-2 md:inset-x-4"
+        className="glass fixed inset-x-2 bottom-16 z-40 rounded-2xl px-3 py-2 shadow-glow md:bottom-2 md:left-[17rem] md:right-4 md:inset-x-auto"
       >
         <div className="grid grid-cols-[1fr,auto,1fr] items-center gap-3 md:gap-6">
           {/* Track info */}
