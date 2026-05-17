@@ -42,6 +42,9 @@ export function TrackMenu({ track, className }: { track: Track; className?: stri
   const qc = useQueryClient();
   const add = useMutation({
     mutationFn: async (playlistId: string) => {
+      if (track.source === "preview") {
+        throw new Error("30s previews can't be saved to playlists. Try the Like button instead.");
+      }
       const { data: rows } = await supabase
         .from("playlist_tracks")
         .select("position")
