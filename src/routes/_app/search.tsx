@@ -44,7 +44,11 @@ function SearchPage() {
 
   const tracks = useQuery({
     queryKey: ["search", "tracks", debounced],
-    queryFn: () => searchTracks(debounced),
+    queryFn: async () => {
+      const raw = await searchTracks(debounced);
+      // Re-rank by play_count desc as a safety net — Audius "popular" sort isn't always strict.
+      return [...raw].sort((a, b) => (b.play_count ?? 0) - (a.play_count ?? 0));
+    },
     enabled: debounced.length >= 2,
   });
   const users = useQuery({

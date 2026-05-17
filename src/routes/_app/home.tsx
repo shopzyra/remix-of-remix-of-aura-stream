@@ -7,6 +7,7 @@ import { usePlayer, type Track } from "@/store/player";
 import { useUser } from "@/hooks/use-user";
 import { supabase } from "@/integrations/supabase/client";
 import { formatDuration } from "@/lib/format";
+import { TrackMenu } from "@/components/AddToPlaylistMenu";
 
 export const Route = createFileRoute("/_app/home")({
   component: HomePage,
@@ -145,26 +146,27 @@ function TrackRow({ tracks, loading }: { tracks: Track[]; loading: boolean }) {
   return (
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
       {tracks.slice(0, 10).map((t, i) => (
-        <button
-          key={t.key}
-          onClick={() => playNow(tracks, i)}
-          className="group text-left"
-        >
-          <div className="relative mb-3 aspect-square overflow-hidden rounded-xl bg-surface-2 shadow-lg">
-            {t.coverUrl ? (
-              <img src={t.coverUrl} alt="" loading="lazy" className="h-full w-full object-cover transition group-hover:scale-105" />
-            ) : (
-              <div className="h-full w-full gradient-brand" />
-            )}
-            <div className="absolute bottom-2 right-2 translate-y-2 opacity-0 transition group-hover:translate-y-0 group-hover:opacity-100">
-              <div className="grid h-10 w-10 place-items-center rounded-full gradient-brand text-primary-foreground shadow-glow">
-                <Play className="h-4 w-4 fill-current" />
+        <div key={t.key} className="group relative text-left">
+          <button onClick={() => playNow(tracks, i)} className="block w-full text-left">
+            <div className="relative mb-3 aspect-square overflow-hidden rounded-xl bg-surface-2 shadow-lg">
+              {t.coverUrl ? (
+                <img src={t.coverUrl} alt="" loading="lazy" className="h-full w-full object-cover transition group-hover:scale-105" />
+              ) : (
+                <div className="h-full w-full gradient-brand" />
+              )}
+              <div className="absolute bottom-2 right-2 translate-y-2 opacity-0 transition group-hover:translate-y-0 group-hover:opacity-100">
+                <div className="grid h-10 w-10 place-items-center rounded-full gradient-brand text-primary-foreground shadow-glow">
+                  <Play className="h-4 w-4 fill-current" />
+                </div>
               </div>
             </div>
+            <div className="truncate text-sm font-semibold">{t.title}</div>
+            <div className="truncate text-xs text-muted-foreground">{t.artist} · {formatDuration(t.durationSeconds)}</div>
+          </button>
+          <div className="absolute right-1 top-1 opacity-0 transition group-hover:opacity-100">
+            <TrackMenu track={t} />
           </div>
-          <div className="truncate text-sm font-semibold">{t.title}</div>
-          <div className="truncate text-xs text-muted-foreground">{t.artist} · {formatDuration(t.durationSeconds)}</div>
-        </button>
+        </div>
       ))}
     </div>
   );
