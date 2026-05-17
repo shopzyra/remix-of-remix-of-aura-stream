@@ -53,10 +53,10 @@
   --radius: 0.75rem;
 
   /* Surfaces */
-  --background: oklch(0.13 0.015 280);
+  --background: oklch(0.10 0.018 285);
   --foreground: oklch(0.98 0.005 280);
-  --surface-1: oklch(0.17 0.018 280);
-  --surface-2: oklch(0.21 0.022 280);
+  --surface-1: oklch(0.14 0.022 285);
+  --surface-2: oklch(0.18 0.028 290);
 
   --card: oklch(0.17 0.018 280);
   --card-foreground: oklch(0.98 0.005 280);
@@ -64,9 +64,9 @@
   --popover-foreground: oklch(0.98 0.005 280);
 
   /* Brand — violet */
-  --primary: oklch(0.66 0.21 295);
+  --primary: oklch(0.62 0.24 300);
   --primary-foreground: oklch(0.99 0 0);
-  --glow: oklch(0.74 0.22 305);
+  --glow: oklch(0.78 0.22 325);
 
   --secondary: oklch(0.24 0.02 280);
   --secondary-foreground: oklch(0.98 0.005 280);
