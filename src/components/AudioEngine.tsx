@@ -176,10 +176,9 @@ export function AudioEngine() {
       }
       // Sink (device) switching
       if (state.sinkId !== prev.sinkId && state.sinkId != null) {
-        // @ts-expect-error setSinkId is not in lib.dom
-        if (typeof a.setSinkId === "function") {
-          // @ts-expect-error
-          a.setSinkId(state.sinkId).catch(() => {});
+        const anyA = a as HTMLAudioElement & { setSinkId?: (id: string) => Promise<void> };
+        if (typeof anyA.setSinkId === "function") {
+          anyA.setSinkId(state.sinkId).catch(() => {});
         }
       }
       // Seek
