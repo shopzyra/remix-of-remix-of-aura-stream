@@ -90,6 +90,13 @@ export async function getTrack(id: string) {
 export async function userTracks(userId: string) {
   return api<AudiusTrack[]>(`/users/${userId}/tracks`, { limit: "20" });
 }
+export async function playlistTracks(playlistId: string) {
+  return api<AudiusTrack[]>(`/playlists/${playlistId}/tracks`);
+}
+export async function getPlaylist(playlistId: string) {
+  const data = await api<AudiusPlaylist[]>(`/playlists/${playlistId}`);
+  return Array.isArray(data) ? data[0] : data;
+}
 
 export async function streamUrl(trackId: string): Promise<string> {
   const host = await getHost();

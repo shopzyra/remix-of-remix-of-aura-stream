@@ -4,7 +4,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-export type TrackSource = "audius" | "uploaded";
+export type TrackSource = "audius" | "uploaded" | "preview";
 
 export interface Track {
   // Stable key: `${source}:${id}`
