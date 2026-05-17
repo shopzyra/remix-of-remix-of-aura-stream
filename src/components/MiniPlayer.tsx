@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Play,
@@ -15,8 +15,11 @@ import {
   Maximize2,
   ListMusic,
   Speaker,
+  Wifi,
+  WifiOff,
 } from "lucide-react";
 import { usePlayer, currentTrack } from "@/store/player";
+import { useServiceWorker } from "@/hooks/use-service-worker";
 import { formatDuration } from "@/lib/format";
 import { FullPlayer } from "./FullPlayer";
 import { QueueDrawer } from "./QueueDrawer";
@@ -27,12 +30,49 @@ import { config } from "@/lib/config";
 export function MiniPlayer() {
   const state = usePlayer();
   const track = currentTrack(state);
+  const { isOnline, cacheTrack } = useServiceWorker();
   const [full, setFull] = useState(false);
   const [queueOpen, setQueueOpen] = useState(false);
 
+  // Early return AFTER all hooks
   if (!track) return null;
 
   const VolIcon = state.muted || state.volume === 0 ? VolumeX : state.volume < 0.5 ? Volume1 : Volume2;
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.target as HTMLElement).tagName === "INPUT") return;
+
+      switch (e.code) {
+        case "Space":
+          e.preventDefault();
+          state.togglePlay();
+          break;
+        case "ArrowRight":
+          if (e.shiftKey) {
+            e.preventDefault();
+            state.next();
+          }
+          break;
+        case "ArrowLeft":
+          if (e.shiftKey) {
+            e.preventDefault();
+            state.prev();
+          }
+          break;
+        case "KeyD":
+          if (isOnline && track.streamUrl) {
+            e.preventDefault();
+            cacheTrack(track);
+          }
+          break;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [state, track, isOnline, cacheTrack]);
 
   return (
     <>
@@ -60,6 +100,7 @@ export function MiniPlayer() {
               <div className="truncate text-xs text-muted-foreground">{track.artist}</div>
             </div>
             <LikeButton track={track} className="ml-2 hidden md:inline-flex" />
+            {!isOnline && <WifiOff className="h-4 w-4 text-amber-500 shrink-0 hidden md:block" />}
           </button>
 
           {/* Controls */}
@@ -72,22 +113,22 @@ export function MiniPlayer() {
               >
                 <Shuffle className="h-4 w-4" />
               </button>
-              <button onClick={() => state.prev()} className="p-1.5 text-muted-foreground hover:text-foreground" aria-label="Previous">
+              <button onClick={() => state.prev()} className="p-1.5 text-muted-foreground hover:text-foreground transition active:scale-90" aria-label="Previous">
                 <SkipBack className="h-5 w-5 fill-current" />
               </button>
               <button
                 onClick={() => state.togglePlay()}
-                className="grid h-10 w-10 place-items-center rounded-full bg-foreground text-background transition hover:scale-105"
+                className="grid h-10 w-10 place-items-center rounded-full bg-foreground text-background transition hover:scale-105 active:scale-95"
                 aria-label={state.isPlaying ? "Pause" : "Play"}
               >
                 {state.isPlaying ? <Pause className="h-4 w-4 fill-current" /> : <Play className="h-4 w-4 fill-current" />}
               </button>
-              <button onClick={() => state.next()} className="p-1.5 text-muted-foreground hover:text-foreground" aria-label="Next">
+              <button onClick={() => state.next()} className="p-1.5 text-muted-foreground hover:text-foreground transition active:scale-90" aria-label="Next">
                 <SkipForward className="h-5 w-5 fill-current" />
               </button>
               <button
                 onClick={() => state.cycleRepeat()}
-                className={`hidden p-1.5 md:block ${state.repeat !== "off" ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}
+                className={`hidden p-1.5 md:block transition ${state.repeat !== "off" ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}
                 aria-label="Repeat"
               >
                 {state.repeat === "one" ? <Repeat1 className="h-4 w-4" /> : <Repeat className="h-4 w-4" />}
@@ -111,7 +152,7 @@ export function MiniPlayer() {
             </button>
             {config.audio.deviceSwitching && <DeviceMenu />}
             <div className="hidden items-center gap-2 md:flex">
-              <button onClick={() => state.toggleMute()} className="p-1.5 text-muted-foreground hover:text-foreground" aria-label="Mute">
+              <button onClick={() => state.toggleMute()} className="p-1.5 text-muted-foreground hover:text-foreground transition" aria-label="Mute">
                 <VolIcon className="h-4 w-4" />
               </button>
               <input
@@ -126,7 +167,7 @@ export function MiniPlayer() {
             </div>
             <button
               onClick={() => setFull(true)}
-              className="p-1.5 text-muted-foreground hover:text-foreground"
+              className="p-1.5 text-muted-foreground hover:text-foreground transition"
               aria-label="Expand"
             >
               <Maximize2 className="h-4 w-4" />
