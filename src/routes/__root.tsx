@@ -74,6 +74,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: config.seo.description },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { title: "Lovable App" },
+      { property: "og:title", content: "Lovable App" },
+      { name: "twitter:title", content: "Lovable App" },
+      { name: "description", content: "Auralis is a modern, premium music streaming platform offering fast playback, discovery, and playlist management." },
+      { property: "og:description", content: "Auralis is a modern, premium music streaming platform offering fast playback, discovery, and playlist management." },
+      { name: "twitter:description", content: "Auralis is a modern, premium music streaming platform offering fast playback, discovery, and playlist management." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9981f3d5-cc73-4507-adde-33a3592d412e/id-preview-acfa2026--7c2f40e5-6797-4e09-987e-89f6f9100b62.lovable.app-1779036691954.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9981f3d5-cc73-4507-adde-33a3592d412e/id-preview-acfa2026--7c2f40e5-6797-4e09-987e-89f6f9100b62.lovable.app-1779036691954.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -84,8 +92,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: "https://fonts.googleapis.com",
       },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "" },
-      { rel: "preconnect", href: "https://discoveryprovider.audius.co", crossOrigin: "" },
-      { rel: "dns-prefetch", href: "https://itunes.apple.com" },
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap",
