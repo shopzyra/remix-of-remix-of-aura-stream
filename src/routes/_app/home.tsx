@@ -1,12 +1,13 @@
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Play } from "lucide-react";
 import { trending, undergroundTrending, bestArtwork, type AudiusTrack } from "@/lib/audius";
+import { itunesTopSongs } from "@/lib/itunes";
 import { usePlayer, type Track } from "@/store/player";
 import { useUser } from "@/hooks/use-user";
 import { supabase } from "@/integrations/supabase/client";
 import { formatDuration } from "@/lib/format";
+import { TrackMenu } from "@/components/AddToPlaylistMenu";
 
 export const Route = createFileRoute("/_app/home")({
   component: HomePage,
@@ -28,6 +29,11 @@ function HomePage() {
 
   const week = useQuery({ queryKey: ["trending", "week"], queryFn: () => trending("week") });
   const under = useQuery({ queryKey: ["trending", "under"], queryFn: undergroundTrending });
+  const charts = useQuery({
+    queryKey: ["itunes", "top"],
+    queryFn: () => itunesTopSongs("us", 20),
+    staleTime: 30 * 60_000,
+  });
 
   const recent = useQuery({
     queryKey: ["recent", user?.id],
@@ -78,6 +84,24 @@ function HomePage() {
 
       <Section title="Trending this week">
         <TrackRow tracks={week.data?.map(toTrack) ?? []} loading={week.isLoading} />
+      </Section>
+
+      <Section title="Top charts (previews)">
+        <TrackRow
+          tracks={
+            (charts.data ?? []).map((t) => ({
+              key: `preview:${t.id}`,
+              source: "preview" as const,
+              id: t.id,
+              title: t.title,
+              artist: t.artist,
+              coverUrl: t.cover,
+              durationSeconds: t.durationSeconds,
+              streamUrl: t.previewUrl,
+            }))
+          }
+          loading={charts.isLoading}
+        />
       </Section>
 
       <Section title="Underground gems">
