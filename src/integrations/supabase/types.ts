@@ -14,13 +14,297 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      follows: {
+        Row: {
+          created_at: string
+          follower_id: string
+          following_id: string
+        }
+        Insert: {
+          created_at?: string
+          follower_id: string
+          following_id: string
+        }
+        Update: {
+          created_at?: string
+          follower_id?: string
+          following_id?: string
+        }
+        Relationships: []
+      }
+      liked_tracks: {
+        Row: {
+          artist: string | null
+          cover_url: string | null
+          duration_seconds: number | null
+          liked_at: string
+          source: string
+          stream_url: string | null
+          title: string
+          track_key: string
+          user_id: string
+        }
+        Insert: {
+          artist?: string | null
+          cover_url?: string | null
+          duration_seconds?: number | null
+          liked_at?: string
+          source: string
+          stream_url?: string | null
+          title: string
+          track_key: string
+          user_id: string
+        }
+        Update: {
+          artist?: string | null
+          cover_url?: string | null
+          duration_seconds?: number | null
+          liked_at?: string
+          source?: string
+          stream_url?: string | null
+          title?: string
+          track_key?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      listening_history: {
+        Row: {
+          artist: string | null
+          cover_url: string | null
+          id: string
+          played_at: string
+          source: string
+          title: string
+          track_key: string
+          user_id: string
+        }
+        Insert: {
+          artist?: string | null
+          cover_url?: string | null
+          id?: string
+          played_at?: string
+          source: string
+          title: string
+          track_key: string
+          user_id: string
+        }
+        Update: {
+          artist?: string | null
+          cover_url?: string | null
+          id?: string
+          played_at?: string
+          source?: string
+          title?: string
+          track_key?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      playlist_collaborators: {
+        Row: {
+          added_at: string
+          playlist_id: string
+          user_id: string
+        }
+        Insert: {
+          added_at?: string
+          playlist_id: string
+          user_id: string
+        }
+        Update: {
+          added_at?: string
+          playlist_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "playlist_collaborators_playlist_id_fkey"
+            columns: ["playlist_id"]
+            isOneToOne: false
+            referencedRelation: "playlists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      playlist_tracks: {
+        Row: {
+          added_at: string
+          added_by: string | null
+          artist: string | null
+          cover_url: string | null
+          duration_seconds: number | null
+          external_id: string | null
+          id: string
+          playlist_id: string
+          position: number
+          source: string
+          stream_url: string | null
+          title: string
+          uploaded_track_id: string | null
+        }
+        Insert: {
+          added_at?: string
+          added_by?: string | null
+          artist?: string | null
+          cover_url?: string | null
+          duration_seconds?: number | null
+          external_id?: string | null
+          id?: string
+          playlist_id: string
+          position: number
+          source: string
+          stream_url?: string | null
+          title: string
+          uploaded_track_id?: string | null
+        }
+        Update: {
+          added_at?: string
+          added_by?: string | null
+          artist?: string | null
+          cover_url?: string | null
+          duration_seconds?: number | null
+          external_id?: string | null
+          id?: string
+          playlist_id?: string
+          position?: number
+          source?: string
+          stream_url?: string | null
+          title?: string
+          uploaded_track_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "playlist_tracks_playlist_id_fkey"
+            columns: ["playlist_id"]
+            isOneToOne: false
+            referencedRelation: "playlists"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "playlist_tracks_uploaded_track_id_fkey"
+            columns: ["uploaded_track_id"]
+            isOneToOne: false
+            referencedRelation: "uploaded_tracks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      playlists: {
+        Row: {
+          cover_url: string | null
+          created_at: string
+          description: string | null
+          id: string
+          is_collaborative: boolean
+          is_public: boolean
+          name: string
+          owner_id: string
+          updated_at: string
+        }
+        Insert: {
+          cover_url?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_collaborative?: boolean
+          is_public?: boolean
+          name: string
+          owner_id: string
+          updated_at?: string
+        }
+        Update: {
+          cover_url?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_collaborative?: boolean
+          is_public?: boolean
+          name?: string
+          owner_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+          username: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string | null
+          id: string
+          updated_at?: string
+          username?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          username?: string | null
+        }
+        Relationships: []
+      }
+      uploaded_tracks: {
+        Row: {
+          album: string | null
+          artist: string | null
+          cover_url: string | null
+          created_at: string
+          duration_seconds: number | null
+          id: string
+          owner_id: string
+          storage_path: string
+          title: string
+        }
+        Insert: {
+          album?: string | null
+          artist?: string | null
+          cover_url?: string | null
+          created_at?: string
+          duration_seconds?: number | null
+          id?: string
+          owner_id: string
+          storage_path: string
+          title: string
+        }
+        Update: {
+          album?: string | null
+          artist?: string | null
+          cover_url?: string | null
+          created_at?: string
+          duration_seconds?: number | null
+          id?: string
+          owner_id?: string
+          storage_path?: string
+          title?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      can_edit_playlist: {
+        Args: { _playlist_id: string; _user_id: string }
+        Returns: boolean
+      }
+      can_view_playlist: {
+        Args: { _playlist_id: string; _user_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never
