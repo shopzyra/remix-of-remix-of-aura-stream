@@ -23,6 +23,7 @@ import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AppUploadRouteImport } from './routes/_app/upload'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
 import { Route as AppSearchRouteImport } from './routes/_app/search'
+import { Route as AppPodcastsRouteImport } from './routes/_app/podcasts'
 import { Route as AppPlaylistsRouteImport } from './routes/_app/playlists'
 import { Route as AppLyricsRouteImport } from './routes/_app/lyrics'
 import { Route as AppLikedRouteImport } from './routes/_app/liked'
@@ -102,6 +103,11 @@ const AppSearchRoute = AppSearchRouteImport.update({
   path: '/search',
   getParentRoute: () => AppRoute,
 } as any)
+const AppPodcastsRoute = AppPodcastsRouteImport.update({
+  id: '/podcasts',
+  path: '/podcasts',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppPlaylistsRoute = AppPlaylistsRouteImport.update({
   id: '/playlists',
   path: '/playlists',
@@ -159,6 +165,7 @@ export interface FileRoutesByFullPath {
   '/liked': typeof AppLikedRoute
   '/lyrics': typeof AppLyricsRoute
   '/playlists': typeof AppPlaylistsRouteWithChildren
+  '/podcasts': typeof AppPodcastsRoute
   '/search': typeof AppSearchRoute
   '/settings': typeof AppSettingsRoute
   '/upload': typeof AppUploadRoute
@@ -182,6 +189,7 @@ export interface FileRoutesByTo {
   '/liked': typeof AppLikedRoute
   '/lyrics': typeof AppLyricsRoute
   '/playlists': typeof AppPlaylistsRouteWithChildren
+  '/podcasts': typeof AppPodcastsRoute
   '/search': typeof AppSearchRoute
   '/settings': typeof AppSettingsRoute
   '/upload': typeof AppUploadRoute
@@ -208,6 +216,7 @@ export interface FileRoutesById {
   '/_app/liked': typeof AppLikedRoute
   '/_app/lyrics': typeof AppLyricsRoute
   '/_app/playlists': typeof AppPlaylistsRouteWithChildren
+  '/_app/podcasts': typeof AppPodcastsRoute
   '/_app/search': typeof AppSearchRoute
   '/_app/settings': typeof AppSettingsRoute
   '/_app/upload': typeof AppUploadRoute
@@ -234,6 +243,7 @@ export interface FileRouteTypes {
     | '/liked'
     | '/lyrics'
     | '/playlists'
+    | '/podcasts'
     | '/search'
     | '/settings'
     | '/upload'
@@ -257,6 +267,7 @@ export interface FileRouteTypes {
     | '/liked'
     | '/lyrics'
     | '/playlists'
+    | '/podcasts'
     | '/search'
     | '/settings'
     | '/upload'
@@ -282,6 +293,7 @@ export interface FileRouteTypes {
     | '/_app/liked'
     | '/_app/lyrics'
     | '/_app/playlists'
+    | '/_app/podcasts'
     | '/_app/search'
     | '/_app/settings'
     | '/_app/upload'
@@ -403,6 +415,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSearchRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/podcasts': {
+      id: '/_app/podcasts'
+      path: '/podcasts'
+      fullPath: '/podcasts'
+      preLoaderRoute: typeof AppPodcastsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/playlists': {
       id: '/_app/playlists'
       path: '/playlists'
@@ -489,6 +508,7 @@ interface AppRouteChildren {
   AppLikedRoute: typeof AppLikedRoute
   AppLyricsRoute: typeof AppLyricsRoute
   AppPlaylistsRoute: typeof AppPlaylistsRouteWithChildren
+  AppPodcastsRoute: typeof AppPodcastsRoute
   AppSearchRoute: typeof AppSearchRoute
   AppSettingsRoute: typeof AppSettingsRoute
   AppUploadRoute: typeof AppUploadRoute
@@ -503,6 +523,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppLikedRoute: AppLikedRoute,
   AppLyricsRoute: AppLyricsRoute,
   AppPlaylistsRoute: AppPlaylistsRouteWithChildren,
+  AppPodcastsRoute: AppPodcastsRoute,
   AppSearchRoute: AppSearchRoute,
   AppSettingsRoute: AppSettingsRoute,
   AppUploadRoute: AppUploadRoute,
