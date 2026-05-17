@@ -9,38 +9,265 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LegalRouteImport } from './routes/legal'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LegalTermsRouteImport } from './routes/legal.terms'
+import { Route as LegalPrivacyRouteImport } from './routes/legal.privacy'
+import { Route as LegalDmcaRouteImport } from './routes/legal.dmca'
+import { Route as LegalCookiesRouteImport } from './routes/legal.cookies'
+import { Route as LegalCommunityRouteImport } from './routes/legal.community'
+import { Route as AppUploadRouteImport } from './routes/_app/upload'
+import { Route as AppSettingsRouteImport } from './routes/_app/settings'
+import { Route as AppSearchRouteImport } from './routes/_app/search'
+import { Route as AppPlaylistsRouteImport } from './routes/_app/playlists'
+import { Route as AppLikedRouteImport } from './routes/_app/liked'
+import { Route as AppLibraryRouteImport } from './routes/_app/library'
+import { Route as AppHomeRouteImport } from './routes/_app/home'
+import { Route as AppHistoryRouteImport } from './routes/_app/history'
+import { Route as AppPlaylistsIdRouteImport } from './routes/_app/playlists.$id'
 
+const LegalRoute = LegalRouteImport.update({
+  id: '/legal',
+  path: '/legal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LegalTermsRoute = LegalTermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => LegalRoute,
+} as any)
+const LegalPrivacyRoute = LegalPrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => LegalRoute,
+} as any)
+const LegalDmcaRoute = LegalDmcaRouteImport.update({
+  id: '/dmca',
+  path: '/dmca',
+  getParentRoute: () => LegalRoute,
+} as any)
+const LegalCookiesRoute = LegalCookiesRouteImport.update({
+  id: '/cookies',
+  path: '/cookies',
+  getParentRoute: () => LegalRoute,
+} as any)
+const LegalCommunityRoute = LegalCommunityRouteImport.update({
+  id: '/community',
+  path: '/community',
+  getParentRoute: () => LegalRoute,
+} as any)
+const AppUploadRoute = AppUploadRouteImport.update({
+  id: '/upload',
+  path: '/upload',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSearchRoute = AppSearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPlaylistsRoute = AppPlaylistsRouteImport.update({
+  id: '/playlists',
+  path: '/playlists',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppLikedRoute = AppLikedRouteImport.update({
+  id: '/liked',
+  path: '/liked',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppLibraryRoute = AppLibraryRouteImport.update({
+  id: '/library',
+  path: '/library',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppHomeRoute = AppHomeRouteImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppHistoryRoute = AppHistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPlaylistsIdRoute = AppPlaylistsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AppPlaylistsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/legal': typeof LegalRouteWithChildren
+  '/history': typeof AppHistoryRoute
+  '/home': typeof AppHomeRoute
+  '/library': typeof AppLibraryRoute
+  '/liked': typeof AppLikedRoute
+  '/playlists': typeof AppPlaylistsRouteWithChildren
+  '/search': typeof AppSearchRoute
+  '/settings': typeof AppSettingsRoute
+  '/upload': typeof AppUploadRoute
+  '/legal/community': typeof LegalCommunityRoute
+  '/legal/cookies': typeof LegalCookiesRoute
+  '/legal/dmca': typeof LegalDmcaRoute
+  '/legal/privacy': typeof LegalPrivacyRoute
+  '/legal/terms': typeof LegalTermsRoute
+  '/playlists/$id': typeof AppPlaylistsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/legal': typeof LegalRouteWithChildren
+  '/history': typeof AppHistoryRoute
+  '/home': typeof AppHomeRoute
+  '/library': typeof AppLibraryRoute
+  '/liked': typeof AppLikedRoute
+  '/playlists': typeof AppPlaylistsRouteWithChildren
+  '/search': typeof AppSearchRoute
+  '/settings': typeof AppSettingsRoute
+  '/upload': typeof AppUploadRoute
+  '/legal/community': typeof LegalCommunityRoute
+  '/legal/cookies': typeof LegalCookiesRoute
+  '/legal/dmca': typeof LegalDmcaRoute
+  '/legal/privacy': typeof LegalPrivacyRoute
+  '/legal/terms': typeof LegalTermsRoute
+  '/playlists/$id': typeof AppPlaylistsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_app': typeof AppRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/legal': typeof LegalRouteWithChildren
+  '/_app/history': typeof AppHistoryRoute
+  '/_app/home': typeof AppHomeRoute
+  '/_app/library': typeof AppLibraryRoute
+  '/_app/liked': typeof AppLikedRoute
+  '/_app/playlists': typeof AppPlaylistsRouteWithChildren
+  '/_app/search': typeof AppSearchRoute
+  '/_app/settings': typeof AppSettingsRoute
+  '/_app/upload': typeof AppUploadRoute
+  '/legal/community': typeof LegalCommunityRoute
+  '/legal/cookies': typeof LegalCookiesRoute
+  '/legal/dmca': typeof LegalDmcaRoute
+  '/legal/privacy': typeof LegalPrivacyRoute
+  '/legal/terms': typeof LegalTermsRoute
+  '/_app/playlists/$id': typeof AppPlaylistsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/legal'
+    | '/history'
+    | '/home'
+    | '/library'
+    | '/liked'
+    | '/playlists'
+    | '/search'
+    | '/settings'
+    | '/upload'
+    | '/legal/community'
+    | '/legal/cookies'
+    | '/legal/dmca'
+    | '/legal/privacy'
+    | '/legal/terms'
+    | '/playlists/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/legal'
+    | '/history'
+    | '/home'
+    | '/library'
+    | '/liked'
+    | '/playlists'
+    | '/search'
+    | '/settings'
+    | '/upload'
+    | '/legal/community'
+    | '/legal/cookies'
+    | '/legal/dmca'
+    | '/legal/privacy'
+    | '/legal/terms'
+    | '/playlists/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/_app'
+    | '/auth'
+    | '/legal'
+    | '/_app/history'
+    | '/_app/home'
+    | '/_app/library'
+    | '/_app/liked'
+    | '/_app/playlists'
+    | '/_app/search'
+    | '/_app/settings'
+    | '/_app/upload'
+    | '/legal/community'
+    | '/legal/cookies'
+    | '/legal/dmca'
+    | '/legal/privacy'
+    | '/legal/terms'
+    | '/_app/playlists/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  LegalRoute: typeof LegalRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/legal': {
+      id: '/legal'
+      path: '/legal'
+      fullPath: '/legal'
+      preLoaderRoute: typeof LegalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +275,167 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/legal/terms': {
+      id: '/legal/terms'
+      path: '/terms'
+      fullPath: '/legal/terms'
+      preLoaderRoute: typeof LegalTermsRouteImport
+      parentRoute: typeof LegalRoute
+    }
+    '/legal/privacy': {
+      id: '/legal/privacy'
+      path: '/privacy'
+      fullPath: '/legal/privacy'
+      preLoaderRoute: typeof LegalPrivacyRouteImport
+      parentRoute: typeof LegalRoute
+    }
+    '/legal/dmca': {
+      id: '/legal/dmca'
+      path: '/dmca'
+      fullPath: '/legal/dmca'
+      preLoaderRoute: typeof LegalDmcaRouteImport
+      parentRoute: typeof LegalRoute
+    }
+    '/legal/cookies': {
+      id: '/legal/cookies'
+      path: '/cookies'
+      fullPath: '/legal/cookies'
+      preLoaderRoute: typeof LegalCookiesRouteImport
+      parentRoute: typeof LegalRoute
+    }
+    '/legal/community': {
+      id: '/legal/community'
+      path: '/community'
+      fullPath: '/legal/community'
+      preLoaderRoute: typeof LegalCommunityRouteImport
+      parentRoute: typeof LegalRoute
+    }
+    '/_app/upload': {
+      id: '/_app/upload'
+      path: '/upload'
+      fullPath: '/upload'
+      preLoaderRoute: typeof AppUploadRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/settings': {
+      id: '/_app/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/search': {
+      id: '/_app/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof AppSearchRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/playlists': {
+      id: '/_app/playlists'
+      path: '/playlists'
+      fullPath: '/playlists'
+      preLoaderRoute: typeof AppPlaylistsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/liked': {
+      id: '/_app/liked'
+      path: '/liked'
+      fullPath: '/liked'
+      preLoaderRoute: typeof AppLikedRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/library': {
+      id: '/_app/library'
+      path: '/library'
+      fullPath: '/library'
+      preLoaderRoute: typeof AppLibraryRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/home': {
+      id: '/_app/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof AppHomeRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/history': {
+      id: '/_app/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof AppHistoryRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/playlists/$id': {
+      id: '/_app/playlists/$id'
+      path: '/$id'
+      fullPath: '/playlists/$id'
+      preLoaderRoute: typeof AppPlaylistsIdRouteImport
+      parentRoute: typeof AppPlaylistsRoute
+    }
   }
 }
 
+interface AppPlaylistsRouteChildren {
+  AppPlaylistsIdRoute: typeof AppPlaylistsIdRoute
+}
+
+const AppPlaylistsRouteChildren: AppPlaylistsRouteChildren = {
+  AppPlaylistsIdRoute: AppPlaylistsIdRoute,
+}
+
+const AppPlaylistsRouteWithChildren = AppPlaylistsRoute._addFileChildren(
+  AppPlaylistsRouteChildren,
+)
+
+interface AppRouteChildren {
+  AppHistoryRoute: typeof AppHistoryRoute
+  AppHomeRoute: typeof AppHomeRoute
+  AppLibraryRoute: typeof AppLibraryRoute
+  AppLikedRoute: typeof AppLikedRoute
+  AppPlaylistsRoute: typeof AppPlaylistsRouteWithChildren
+  AppSearchRoute: typeof AppSearchRoute
+  AppSettingsRoute: typeof AppSettingsRoute
+  AppUploadRoute: typeof AppUploadRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppHistoryRoute: AppHistoryRoute,
+  AppHomeRoute: AppHomeRoute,
+  AppLibraryRoute: AppLibraryRoute,
+  AppLikedRoute: AppLikedRoute,
+  AppPlaylistsRoute: AppPlaylistsRouteWithChildren,
+  AppSearchRoute: AppSearchRoute,
+  AppSettingsRoute: AppSettingsRoute,
+  AppUploadRoute: AppUploadRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
+interface LegalRouteChildren {
+  LegalCommunityRoute: typeof LegalCommunityRoute
+  LegalCookiesRoute: typeof LegalCookiesRoute
+  LegalDmcaRoute: typeof LegalDmcaRoute
+  LegalPrivacyRoute: typeof LegalPrivacyRoute
+  LegalTermsRoute: typeof LegalTermsRoute
+}
+
+const LegalRouteChildren: LegalRouteChildren = {
+  LegalCommunityRoute: LegalCommunityRoute,
+  LegalCookiesRoute: LegalCookiesRoute,
+  LegalDmcaRoute: LegalDmcaRoute,
+  LegalPrivacyRoute: LegalPrivacyRoute,
+  LegalTermsRoute: LegalTermsRoute,
+}
+
+const LegalRouteWithChildren = LegalRoute._addFileChildren(LegalRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
+  AuthRoute: AuthRoute,
+  LegalRoute: LegalRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
