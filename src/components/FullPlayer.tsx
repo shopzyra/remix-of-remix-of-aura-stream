@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
-import { X, Play, Pause, SkipBack, SkipForward, Repeat, Repeat1, Shuffle, Heart } from "lucide-react";
+import { X, Play, Pause, SkipBack, SkipForward, Repeat, Repeat1, Shuffle, Gauge } from "lucide-react";
 import { usePlayer, currentTrack } from "@/store/player";
 import { formatDuration } from "@/lib/format";
 import { LikeButton } from "./LikeButton";
+import { TrackDetailsDialog } from "./TrackDetailsDialog";
 
 export function FullPlayer({ onClose }: { onClose: () => void }) {
   const state = usePlayer();
@@ -46,9 +47,12 @@ export function FullPlayer({ onClose }: { onClose: () => void }) {
           )}
         </motion.div>
 
-        <div className="w-full text-center">
-          <h2 className="truncate text-2xl font-bold">{track.title}</h2>
-          <p className="truncate text-muted-foreground">{track.artist}</p>
+        <div className="flex w-full items-start justify-center gap-2 text-center">
+          <div className="min-w-0 flex-1">
+            <h2 className="truncate text-2xl font-bold">{track.title}</h2>
+            <p className="truncate text-muted-foreground">{track.artist}</p>
+          </div>
+          <TrackDetailsDialog track={track} />
         </div>
 
         <div className="w-full">
@@ -97,10 +101,33 @@ export function FullPlayer({ onClose }: { onClose: () => void }) {
           </button>
         </div>
 
-        <LikeButton track={track} size="lg" />
+        <div className="flex items-center gap-3">
+          <LikeButton track={track} size="lg" />
+          <SpeedControl />
+        </div>
       </div>
 
       <div className="px-6 pb-8 text-center text-xs text-muted-foreground">Space to play/pause • Shift ⇠/⇢ to skip</div>
     </motion.div>
+  );
+}
+
+function SpeedControl() {
+  const rate = usePlayer((s) => s.playbackRate);
+  const setRate = usePlayer((s) => s.setPlaybackRate);
+  const steps = [0.75, 1, 1.25, 1.5, 2];
+  const next = () => {
+    const i = steps.indexOf(rate);
+    setRate(steps[(i + 1) % steps.length] ?? 1);
+  };
+  return (
+    <button
+      onClick={next}
+      className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-1/60 px-3 py-1.5 text-xs font-semibold hover:bg-surface-2"
+      aria-label="Playback speed"
+    >
+      <Gauge className="h-3.5 w-3.5" />
+      {rate}×
+    </button>
   );
 }
