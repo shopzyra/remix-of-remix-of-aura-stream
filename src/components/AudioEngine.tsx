@@ -129,6 +129,7 @@ export function AudioEngine() {
             a.src = url;
             a.currentTime = 0;
             a.volume = state.muted ? 0 : state.volume;
+            a.playbackRate = state.playbackRate;
             if (state.isPlaying) a.play().catch(() => {});
             if ("mediaSession" in navigator) {
               navigator.mediaSession.metadata = new MediaMetadata({
@@ -167,6 +168,9 @@ export function AudioEngine() {
       }
       if (state.volume !== prev.volume || state.muted !== prev.muted) {
         a.volume = state.muted ? 0 : state.volume;
+      }
+      if (state.playbackRate !== prev.playbackRate) {
+        a.playbackRate = state.playbackRate;
       }
       if (state.sinkId !== prev.sinkId && state.sinkId != null) {
         const anyA = a as HTMLAudioElement & { setSinkId?: (id: string) => Promise<void> };
