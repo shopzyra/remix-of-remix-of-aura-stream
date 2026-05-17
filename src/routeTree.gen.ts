@@ -31,6 +31,7 @@ import { Route as AppHomeRouteImport } from './routes/_app/home'
 import { Route as AppHistoryRouteImport } from './routes/_app/history'
 import { Route as AppDonateRouteImport } from './routes/_app/donate'
 import { Route as AppPlaylistsIdRouteImport } from './routes/_app/playlists.$id'
+import { Route as AppAudiusPlaylistIdRouteImport } from './routes/_app/audius-playlist.$id'
 
 const LegalRoute = LegalRouteImport.update({
   id: '/legal',
@@ -141,6 +142,11 @@ const AppPlaylistsIdRoute = AppPlaylistsIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => AppPlaylistsRoute,
 } as any)
+const AppAudiusPlaylistIdRoute = AppAudiusPlaylistIdRouteImport.update({
+  id: '/audius-playlist/$id',
+  path: '/audius-playlist/$id',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -163,6 +169,7 @@ export interface FileRoutesByFullPath {
   '/legal/privacy': typeof LegalPrivacyRoute
   '/legal/terms': typeof LegalTermsRoute
   '/legal/': typeof LegalIndexRoute
+  '/audius-playlist/$id': typeof AppAudiusPlaylistIdRoute
   '/playlists/$id': typeof AppPlaylistsIdRoute
 }
 export interface FileRoutesByTo {
@@ -185,6 +192,7 @@ export interface FileRoutesByTo {
   '/legal/privacy': typeof LegalPrivacyRoute
   '/legal/terms': typeof LegalTermsRoute
   '/legal': typeof LegalIndexRoute
+  '/audius-playlist/$id': typeof AppAudiusPlaylistIdRoute
   '/playlists/$id': typeof AppPlaylistsIdRoute
 }
 export interface FileRoutesById {
@@ -210,6 +218,7 @@ export interface FileRoutesById {
   '/legal/privacy': typeof LegalPrivacyRoute
   '/legal/terms': typeof LegalTermsRoute
   '/legal/': typeof LegalIndexRoute
+  '/_app/audius-playlist/$id': typeof AppAudiusPlaylistIdRoute
   '/_app/playlists/$id': typeof AppPlaylistsIdRoute
 }
 export interface FileRouteTypes {
@@ -235,6 +244,7 @@ export interface FileRouteTypes {
     | '/legal/privacy'
     | '/legal/terms'
     | '/legal/'
+    | '/audius-playlist/$id'
     | '/playlists/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -257,6 +267,7 @@ export interface FileRouteTypes {
     | '/legal/privacy'
     | '/legal/terms'
     | '/legal'
+    | '/audius-playlist/$id'
     | '/playlists/$id'
   id:
     | '__root__'
@@ -281,6 +292,7 @@ export interface FileRouteTypes {
     | '/legal/privacy'
     | '/legal/terms'
     | '/legal/'
+    | '/_app/audius-playlist/$id'
     | '/_app/playlists/$id'
   fileRoutesById: FileRoutesById
 }
@@ -447,6 +459,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppPlaylistsIdRouteImport
       parentRoute: typeof AppPlaylistsRoute
     }
+    '/_app/audius-playlist/$id': {
+      id: '/_app/audius-playlist/$id'
+      path: '/audius-playlist/$id'
+      fullPath: '/audius-playlist/$id'
+      preLoaderRoute: typeof AppAudiusPlaylistIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
@@ -473,6 +492,7 @@ interface AppRouteChildren {
   AppSearchRoute: typeof AppSearchRoute
   AppSettingsRoute: typeof AppSettingsRoute
   AppUploadRoute: typeof AppUploadRoute
+  AppAudiusPlaylistIdRoute: typeof AppAudiusPlaylistIdRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
@@ -486,6 +506,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppSearchRoute: AppSearchRoute,
   AppSettingsRoute: AppSettingsRoute,
   AppUploadRoute: AppUploadRoute,
+  AppAudiusPlaylistIdRoute: AppAudiusPlaylistIdRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
@@ -529,13 +550,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

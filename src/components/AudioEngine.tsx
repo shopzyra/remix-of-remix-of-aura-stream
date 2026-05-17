@@ -11,6 +11,10 @@ const CROSSFADE = config.audio.crossfade ? config.audio.crossfadeSeconds : 0;
 // Resolve to a short-lived signed URL each time we (re)load the source.
 async function resolveStreamUrl(t: Track): Promise<string> {
   if (t.source === "audius") return audiusStream(t.id);
+  if (t.source === "preview") {
+    if (!t.streamUrl) throw new Error("Missing preview url");
+    return t.streamUrl;
+  }
   // uploaded
   const path = t.streamUrl ?? "";
   if (!path) throw new Error("Missing storage path");
