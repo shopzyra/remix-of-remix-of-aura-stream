@@ -88,48 +88,10 @@ function SearchPage() {
       ) : (
         <div className="space-y-10">
           <section>
-            <h2 className="mb-3 text-lg font-bold">Tracks</h2>
-            {tracks.isLoading ? (
-              <Skeletons />
-            ) : (tracks.data ?? []).length === 0 ? (
-              <Empty />
-            ) : (
-              <div className="space-y-1">
-                {(tracks.data ?? []).slice(0, 20).map((t, i, arr) => {
-                  const all = arr.map(toTrack);
-                  return (
-                    <button
-                      key={t.id}
-                      onClick={() => playNow(all, i)}
-                      className="group flex w-full items-center gap-3 rounded-lg p-2 hover:bg-surface-1"
-                    >
-                      <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded">
-                        <img src={bestArtwork(t)} alt="" loading="lazy" className="h-full w-full object-cover" />
-                        <div className="absolute inset-0 grid place-items-center bg-black/40 opacity-0 transition group-hover:opacity-100">
-                          <Play className="h-4 w-4 fill-current" />
-                        </div>
-                      </div>
-                      <div className="min-w-0 flex-1 text-left">
-                        <div className="truncate text-sm font-medium">{t.title}</div>
-                        <div className="truncate text-xs text-muted-foreground">{t.user.name}</div>
-                      </div>
-                      <span className="text-xs text-muted-foreground tabular-nums">{formatDuration(t.duration)}</span>
-                      {typeof t.play_count === "number" && t.play_count > 0 && (
-                        <span className="hidden items-center gap-1 text-xs text-muted-foreground sm:inline-flex">
-                          <TrendingUp className="h-3 w-3" />
-                          {formatCount(t.play_count)}
-                        </span>
-                      )}
-                      <TrackMenu track={all[i]} />
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-          </section>
-
-          <section>
-            <h2 className="mb-3 text-lg font-bold">Popular (previews)</h2>
+            <h2 className="mb-3 flex items-center gap-2 text-lg font-bold">
+              <TrendingUp className="h-4 w-4 text-primary" /> Popular matches
+              <span className="text-xs font-normal text-muted-foreground">30s previews · iTunes</span>
+            </h2>
             {itunes.isLoading ? (
               <Skeletons />
             ) : (itunes.data ?? []).length === 0 ? (
@@ -167,6 +129,47 @@ function SearchPage() {
                         </div>
                       </div>
                       <span className="hidden text-[10px] uppercase tracking-wider text-primary sm:inline">30s</span>
+                      <TrackMenu track={all[i]} />
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </section>
+
+          <section>
+            <h2 className="mb-3 text-lg font-bold">Full tracks <span className="text-xs font-normal text-muted-foreground">Audius · indie & electronic catalog</span></h2>
+            {tracks.isLoading ? (
+              <Skeletons />
+            ) : (tracks.data ?? []).length === 0 ? (
+              <Empty />
+            ) : (
+              <div className="space-y-1">
+                {(tracks.data ?? []).slice(0, 20).map((t, i, arr) => {
+                  const all = arr.map(toTrack);
+                  return (
+                    <button
+                      key={t.id}
+                      onClick={() => playNow(all, i)}
+                      className="group flex w-full items-center gap-3 rounded-lg p-2 hover:bg-surface-1"
+                    >
+                      <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded">
+                        <img src={bestArtwork(t)} alt="" loading="lazy" className="h-full w-full object-cover" />
+                        <div className="absolute inset-0 grid place-items-center bg-black/40 opacity-0 transition group-hover:opacity-100">
+                          <Play className="h-4 w-4 fill-current" />
+                        </div>
+                      </div>
+                      <div className="min-w-0 flex-1 text-left">
+                        <div className="truncate text-sm font-medium">{t.title}</div>
+                        <div className="truncate text-xs text-muted-foreground">{t.user.name}</div>
+                      </div>
+                      <span className="text-xs text-muted-foreground tabular-nums">{formatDuration(t.duration)}</span>
+                      {typeof t.play_count === "number" && t.play_count > 0 && (
+                        <span className="hidden items-center gap-1 text-xs text-muted-foreground sm:inline-flex">
+                          <TrendingUp className="h-3 w-3" />
+                          {formatCount(t.play_count)}
+                        </span>
+                      )}
                       <TrackMenu track={all[i]} />
                     </button>
                   );
